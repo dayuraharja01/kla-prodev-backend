@@ -30,7 +30,8 @@ class OrderControllers {
   }
   static async createOrders(req, res) {
     const data = {
-      date: moment().tz("Asia/Jakarta").format("LLLL"),
+      // date: moment().tz("Asia/Jakarta").format("LLLL"),
+      date: req.body.date,
       name: req.body.name,
       product: req.body.product,
       quantity: req.body.quantity,
@@ -47,6 +48,18 @@ class OrderControllers {
     try {
       await Orders.create(data);
       res.json({ msg: "success create data" });
+    } catch (error) {
+      res.json({ msg: error.message });
+    }
+  }
+  static async deleteOrder(req, res) {
+    try {
+      await Orders.destroy({
+        where: {
+          id: req.params.id,
+        },
+      });
+      res.json({ msg: "delete success" });
     } catch (error) {
       res.json({ msg: error.message });
     }
